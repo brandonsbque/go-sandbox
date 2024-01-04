@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -24,8 +25,24 @@ func main() {
 	}
 
 	problems := parseLines(lines)
-	fmt.Println(problems)
 
+	correct := 0
+	for i, p := range problems {
+		// index is zero-based, but we want to start at problem #1, not problem #0
+		fmt.Printf("\nProblem #%d: %s = ", i+1, p.q)
+
+		var answer string
+		fmt.Scanf("%s\n", &answer)
+
+		if answer == p.a {
+			correct++
+			fmt.Println("Correct!")
+		} else {
+			fmt.Println("Wrong!")
+		}
+	}
+
+	fmt.Printf("\nYou scored %d out of %d.\n", correct, len(problems))
 }
 
 func parseLines(lines [][]string) []problem {
@@ -34,7 +51,7 @@ func parseLines(lines [][]string) []problem {
 	for i, line := range lines {
 		ret[i] = problem{
 			q: line[0],
-			a: line[1],
+			a: strings.TrimSpace(line[1]), // take into account spaces in csv file (ie. 5+5,    10)
 		}
 	}
 
